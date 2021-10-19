@@ -1,16 +1,15 @@
 import requests
 
-token_VK = ''
-
 res_dict = dict()
 
 
-class VKSave:
+class VKsave:
     url = 'https://api.vk.com/method/'
 
-    def __init__(self, owner_id):
+    def __init__(self, owner_id, token):
+        self.token_vk = token
         self.params = {
-            'access_token': token_VK,
+            'access_token': token,
             'v': '5.131',
             'owner_id': owner_id
         }
