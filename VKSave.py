@@ -6,20 +6,13 @@ res_dict = dict()
 class VKsave:
     url = 'https://api.vk.com/method/'
 
-    def __init__(self, owner_id, token):
-        self.token_vk = token
-        self.params = {
-            'access_token': token,
-            'v': '5.131',
-            'owner_id': owner_id
-        }
+    def __init__(self, owner_id, token_vk):
+        self.token_vk = token_vk
+        self.params = {'access_token': token_vk, 'v': '5.131', 'owner_id': owner_id}
 
     def get_url_photo(self):
         photo_url = self.url + 'photos.get'
-        photo_params = {
-            'album_id': 'profile',
-            'extended': 1
-        }
+        photo_params = {'album_id': 'profile', 'extended': 1}
         res = requests.get(url=photo_url, params={**self.params, **photo_params}).json()
         url_list = res['response']['items']
         for item in url_list:

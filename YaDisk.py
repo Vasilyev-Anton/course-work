@@ -1,26 +1,21 @@
-from VKSave import res_dict
 import json
 import requests
 from progress.bar import ChargingBar
+from VKSave import res_dict
 
 
 class YaDisk:
 
-    def __init__(self, token):
-        self.token = token
+    def __init__(self, token_ya):
+        self.token_ya = token_ya
 
     def get_headers(self):
-        return {
-            'Content-Type': 'application/json',
-            'Authorization': f'OAuth {self.token}'
-        }
+        return {'Content-Type': 'application/json', 'Authorization': f'OAuth {self.token_ya}'}
 
     def create_a_folder(self, disk_file_path):
         folder_url = 'https://cloud-api.yandex.net/v1/disk/resources'
         headers = self.get_headers()
-        folder_params = {
-            "path": disk_file_path
-        }
+        folder_params = {"path": disk_file_path}
         response = requests.put(url=folder_url, params=folder_params, headers=headers)
         return response.json()
 
@@ -37,10 +32,7 @@ class YaDisk:
             if index > limit:
                 break
             bar.next()
-            uploads_params = {
-                'path': f'{disk_file_path}/{filename}',
-                'url': f'{file_url}'
-            }
+            uploads_params = {'path': f'{disk_file_path}/{filename}', 'url': f'{file_url}'}
             url = 'https://cloud-api.yandex.net/v1/disk/resources/upload'
             requests.post(url=url, params=uploads_params, headers=headers)
             temp_dict = {'file_name': filename + '.jpg', 'size': size}
@@ -61,4 +53,3 @@ class YaDisk:
     def upload_file_to_disk(self, disk_file_path):
         href = self._get_upload_url(disk_file_path=disk_file_path).get('href', '')
         requests.put(href, data=open('info.txt', 'rb'))
-
